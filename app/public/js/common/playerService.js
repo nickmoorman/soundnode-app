@@ -29,6 +29,7 @@ app.factory('playerService', function(
     $timeout,
     $window,
     $state,
+    lastFmService,
     notificationFactory,
     queueService,
     utilsService
@@ -160,6 +161,7 @@ app.factory('playerService', function(
         }
 
         $rootScope.isSongPlaying = true;
+        $rootScope.$broadcast('trackStarted', trackObj);
         $rootScope.$broadcast('activateQueue');
     };
 
@@ -230,6 +232,7 @@ app.factory('playerService', function(
      * Add event listener "on ended" to player
      */
     $(player.elPlayer).off().on('ended', function() {
+        $rootScope.$broadcast('trackEnded', utilsService.getCurrentSong());
         $rootScope.isSongPlaying = false;
         player.playNextSong();
     });
